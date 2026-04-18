@@ -15,6 +15,8 @@ main:
     sd   s5, 8(sp)
     sd   s6, 0(sp)
 
+    addi s6, sp, 0
+
     # if argc <= 1 -> done_empty
     addi t0, a0, -1
     blez t0, done_empty
@@ -49,17 +51,17 @@ main:
 fill_loop:
     bgt  s4, s0, fill_done
 
-    slli t6, s4, 3       # offset = i * 8
-    add  t7, s5, t6
-    ld   a0, 0(t7)       # a0 = argv[i]
+    slli t0, s4, 3       # offset = i * 8
+    add  t1, s5, t0
+    ld   a0, 0(t1)       # a0 = argv[i]
 
     jal  ra, atoi        
 
     # idx = s4 - 1
-    addi t5, s4, -1
-    slli t8, t5, 2
-    add  t9, s1, t8
-    sw   a0, 0(t9)       # arr[idx] = result of atoi
+    addi t0, s4, -1
+    slli t1, t0, 2
+    add  t2, s1, t1
+    sw   a0, 0(t2)       # arr[idx] = result of atoi
 
     addi s4, s4, 1
     jal  zero, fill_loop
@@ -97,11 +99,11 @@ while_loop:
     lw   t6, 0(t5)       # t6 = index from stack
 
     # arr[stack[top]]
-    slli t7, t6, 2
-    add  t8, s1, t7
-    lw   t9, 0(t8)       # t9 = arr[stack[top]]
+    slli t1, t6, 2
+    add  t2, s1, t1
+    lw   t1, 0(t2)       # t1 = arr[stack[top]]
 
-    ble  t9, t3, pop_stack
+    ble  t1, t3, pop_stack
     jal  zero, while_done
 
 pop_stack:
@@ -116,9 +118,9 @@ while_done:
     add  t5, s3, t4
     lw   t6, 0(t5)       # stack[top]
 
-    slli t7, t0, 2
-    add  t8, s2, t7
-    sw   t6, 0(t8)       # result[i] = stack[top]
+    slli t1, t0, 2
+    add  t2, s2, t1
+    sw   t6, 0(t2)       # result[i] = stack[top]
 
 skip_assign:
     # push i
